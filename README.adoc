@@ -1,0 +1,25 @@
+Spring-Boot-Fail-Fast
+---------------------
+
+A program that demonstrates using fail-fast iterators from a Spring Boot application
+
+Features
+~~~~~~~~
+
+* List
+* Map
+* Set
+* Testing
+  - JUnit 5
+
+Gradle JavaExec Tasks
+~~~~~~~~~~~~~~~~~~~~~
+
+[options="header"]
+|=======================
+|Task Name              |Application Invocation
+|bootRun                |No arguments
+|=======================
+
+Current version: 0.1.0.
+~~~~~~~~~~~~~~~~~~~~~~~
