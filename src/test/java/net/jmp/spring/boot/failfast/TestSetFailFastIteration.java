@@ -28,9 +28,7 @@ package net.jmp.spring.boot.failfast;
  * SOFTWARE.
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import java.util.stream.IntStream;
 
@@ -38,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.*;
 
-/// The test class for the set service.
+/// The test class for sets.
 ///
 /// @version    0.1.0
 /// @since      0.1.0
@@ -61,9 +59,9 @@ final class TestSetFailFastIteration {
     @Test
     @DisplayName("Test Fail Fast For Each")
     void testFailFastForEach() {
-        final Runnable runner = () -> {
-            final Set<Integer> copy = this.copy(this.set);
+        final Set<Integer> copy = this.copy(this.set);
 
+        final Runnable runner = () -> {
             for (final Integer value : copy) {
                 System.out.println(Thread.currentThread().getName() + ": " + value);
                 Thread.yield();
@@ -104,9 +102,9 @@ final class TestSetFailFastIteration {
     @Test
     @DisplayName("Test Fail Fast Iterator")
     void testFailFastIterator() {
-        final Runnable runner = () -> {
-            final Set<Integer> copy = this.copy(this.set);
+        final Set<Integer> copy = this.copy(this.set);
 
+        final Runnable runner = () -> {
             for (final Iterator<Integer> iterator = copy.iterator(); iterator.hasNext();) {
                 final Integer value = iterator.next();
 

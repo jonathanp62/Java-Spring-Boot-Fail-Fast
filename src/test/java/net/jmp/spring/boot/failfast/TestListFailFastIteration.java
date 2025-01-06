@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.*;
 
-/// The test class for the list service.
+/// The test class for lists.
 ///
 /// @version    0.1.0
 /// @since      0.1.0
@@ -61,9 +61,9 @@ final class TestListFailFastIteration {
     @Test
     @DisplayName("Test Fail Fast For Each")
     void testFailFastForEach() {
-        final Runnable runner = () -> {
-            final List<Integer> copy = this.copy(this.list);
+        final List<Integer> copy = this.copy(this.list);
 
+        final Runnable runner = () -> {
             for (final Integer value : copy) {
                 System.out.println(Thread.currentThread().getName() + ": " + value);
                 Thread.yield();
@@ -104,9 +104,9 @@ final class TestListFailFastIteration {
     @Test
     @DisplayName("Test Fail Fast Iterator")
     void testFailFastIterator() {
-        final Runnable runner = () -> {
-            final List<Integer> copy = this.copy(this.list);
+        final List<Integer> copy = this.copy(this.list);
 
+        final Runnable runner = () -> {
             for (final Iterator<Integer> iterator = copy.iterator(); iterator.hasNext();) {
                 final int value = iterator.next();
 
