@@ -1,7 +1,7 @@
 package net.jmp.spring.boot.failfast;
 
 /*
- * (#)TestListFailFastIteration.java    0.1.0   01/06/2025
+ * (#)TestSetFailFastIteration.java 0.1.0   01/06/2025
  *
  * @author   Jonathan Parker
  *
@@ -28,9 +28,9 @@ package net.jmp.spring.boot.failfast;
  * SOFTWARE.
  */
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import java.util.stream.IntStream;
 
@@ -38,31 +38,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.*;
 
-/// The test class for the list service.
+/// The test class for the set service.
 ///
 /// @version    0.1.0
 /// @since      0.1.0
-@DisplayName("List Fail Fast Iteration")
-final class TestListFailFastIteration {
+@DisplayName("Set Fail Fast Iteration")
+final class TestSetFailFastIteration {
     private static final int SIZE = 10_000;
 
-    private final List<Integer> list = new ArrayList<>(SIZE);
+    private final Set<Integer> set = new HashSet<>(SIZE);
 
     @BeforeEach
     void beforeEach() {
-        IntStream.rangeClosed(1, SIZE).forEach(this.list::add);
+        IntStream.rangeClosed(1, SIZE).forEach(this.set::add);
     }
 
     @AfterEach
     void afterEach() {
-        this.list.clear();
+        this.set.clear();
     }
 
     @Test
     @DisplayName("Test Fail Fast For Each")
     void testFailFastForEach() {
         final Runnable runner = () -> {
-            final List<Integer> copy = this.copy(this.list);
+            final Set<Integer> copy = this.copy(this.set);
 
             for (final Integer value : copy) {
                 System.out.println(Thread.currentThread().getName() + ": " + value);
@@ -73,7 +73,7 @@ final class TestListFailFastIteration {
         final Runnable modifier = () -> {
             for (int i = 0; i < 100; i++) {
                 System.out.println(Thread.currentThread().getName() + ": " + i);
-                this.list.add((i + 1) * SIZE);
+                this.set.add((i + 11) * SIZE);
                 Thread.yield();
             }
         };
@@ -98,17 +98,17 @@ final class TestListFailFastIteration {
             Thread.currentThread().interrupt();
         }
 
-        assertThat(this.list).hasSize(SIZE + 100);
+        assertThat(this.set).hasSize(SIZE + 100);
     }
 
     @Test
     @DisplayName("Test Fail Fast Iterator")
     void testFailFastIterator() {
         final Runnable runner = () -> {
-            final List<Integer> copy = this.copy(this.list);
+            final Set<Integer> copy = this.copy(this.set);
 
             for (final Iterator<Integer> iterator = copy.iterator(); iterator.hasNext();) {
-                final int value = iterator.next();
+                final Integer value = iterator.next();
 
                 System.out.println(Thread.currentThread().getName() + ": " + value);
                 Thread.yield();
@@ -118,7 +118,7 @@ final class TestListFailFastIteration {
         final Runnable modifier = () -> {
             for (int i = 0; i < 100; i++) {
                 System.out.println(Thread.currentThread().getName() + ": " + i);
-                this.list.add((i + 1) * SIZE);
+                this.set.add((i + 11) * SIZE);
                 Thread.yield();
             }
         };
@@ -143,13 +143,13 @@ final class TestListFailFastIteration {
             Thread.currentThread().interrupt();
         }
 
-        assertThat(this.list).hasSize(SIZE + 100);
+        assertThat(this.set).hasSize(SIZE + 100);
     }
 
-    private List<Integer> copy(final List<Integer> list) {
-        final List<Integer> copy = new ArrayList<>(SIZE);
+    private Set<Integer> copy(final Set<Integer> set) {
+        final Set<Integer> copy = new HashSet<>(SIZE);
 
-        copy.addAll(list);
+        copy.addAll(set);
 
         return copy;
     }
