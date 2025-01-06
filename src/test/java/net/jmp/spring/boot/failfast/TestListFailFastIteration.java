@@ -31,6 +31,9 @@ package net.jmp.spring.boot.failfast;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import java.util.stream.IntStream;
 
@@ -47,20 +50,23 @@ final class TestListFailFastIteration {
     private static final int SIZE = 10_000;
 
     private final List<Integer> list = new ArrayList<>(SIZE);
+    private final Queue<Integer> queue = new ConcurrentLinkedQueue<>();
 
     @BeforeEach
     void beforeEach() {
         IntStream.rangeClosed(1, SIZE).forEach(this.list::add);
+        IntStream.rangeClosed(1, SIZE).forEach(this.queue::add);
     }
 
     @AfterEach
     void afterEach() {
         this.list.clear();
+        this.queue.clear();
     }
 
     @Test
-    @DisplayName("Test Fail Fast For Each")
-    void testFailFastForEach() {
+    @DisplayName("Test Fail Fast For-Each Using ArrayList")
+    void testFailFastForEachUsingArrayList() {
         final List<Integer> copy = this.copy(this.list);
 
         final Runnable runner = () -> {
@@ -102,8 +108,8 @@ final class TestListFailFastIteration {
     }
 
     @Test
-    @DisplayName("Test Fail Fast Iterator")
-    void testFailFastIterator() {
+    @DisplayName("Test Fail Fast Iterator Using ArrayList")
+    void testFailFastIteratorUsingArrayList() {
         final List<Integer> copy = this.copy(this.list);
 
         final Runnable runner = () -> {
@@ -144,6 +150,90 @@ final class TestListFailFastIteration {
         }
 
         assertThat(this.list).hasSize(SIZE + 100);
+    }
+
+    @Test
+    @DisplayName("Test Fail Fast For-Each Using ConcurrentLinkedQueue")
+    void testFailFastForEachUsingConcurrentLinkedQueue() {
+        final Runnable runner = () -> {
+            for (final Integer value : this.queue) {
+                System.out.println(Thread.currentThread().getName() + ": " + value);
+                Thread.yield();
+            }
+        };
+
+        final Runnable modifier = () -> {
+            for (int i = 0; i < 100; i++) {
+                System.out.println(Thread.currentThread().getName() + ": " + i);
+                this.queue.add((i + 1) * SIZE);
+                Thread.yield();
+            }
+        };
+
+        final Thread thread1 = new Thread(runner);
+        final Thread thread2 = new Thread(runner);
+        final Thread thread3 = new Thread(modifier);
+
+        thread1.setName("Runner 1");
+        thread2.setName("Runner 2");
+        thread3.setName("Modifier");
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+        } catch (final InterruptedException _) {
+            Thread.currentThread().interrupt();
+        }
+
+        assertThat(this.queue).hasSize(SIZE + 100);
+    }
+
+    @Test
+    @DisplayName("Test Fail Fast Iterator Using ConcurrentLinkedQueue")
+    void testFailFastIteratorUsingConcurrentLinkedQueue() {
+        final Runnable runner = () -> {
+            for (final Iterator<Integer> iterator = this.queue.iterator(); iterator.hasNext();) {
+                final int value = iterator.next();
+
+                System.out.println(Thread.currentThread().getName() + ": " + value);
+                Thread.yield();
+            }
+        };
+
+        final Runnable modifier = () -> {
+            for (int i = 0; i < 100; i++) {
+                System.out.println(Thread.currentThread().getName() + ": " + i);
+                this.queue.add((i + 1) * SIZE);
+                Thread.yield();
+            }
+        };
+
+        final Thread thread1 = new Thread(runner);
+        final Thread thread2 = new Thread(runner);
+        final Thread thread3 = new Thread(modifier);
+
+        thread1.setName("Runner 1");
+        thread2.setName("Runner 2");
+        thread3.setName("Modifier");
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+        } catch (final InterruptedException _) {
+            Thread.currentThread().interrupt();
+        }
+
+        assertThat(this.queue).hasSize(SIZE + 100);
     }
 
     private List<Integer> copy(final List<Integer> list) {

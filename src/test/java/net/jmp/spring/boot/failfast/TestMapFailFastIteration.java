@@ -62,7 +62,7 @@ final class TestMapFailFastIteration {
     }
 
     @Test
-    @DisplayName("Test Fail Fast For Each Using HashMap")
+    @DisplayName("Test Fail Fast For-Each Using HashMap")
     void testFailFastForEachUsingHashMap() {
         final Map<Integer, Integer> copy = this.copy();
 
@@ -105,7 +105,7 @@ final class TestMapFailFastIteration {
     }
 
     @Test
-    @DisplayName("Test Fail Fast For Each Using ConcurrentHashMap")
+    @DisplayName("Test Fail Fast For-Each Using ConcurrentHashMap")
     void testFailFastForEachUsingConcurrentHashMap() {
         final Runnable runner = () -> {
             for (final Map.Entry<Integer, Integer> entry : this.threadSafeMap.entrySet()) {

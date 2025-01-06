@@ -57,7 +57,7 @@ final class TestSetFailFastIteration {
     }
 
     @Test
-    @DisplayName("Test Fail Fast For Each")
+    @DisplayName("Test Fail Fast For-Each")
     void testFailFastForEach() {
         final Set<Integer> copy = this.copy(this.set);
 
