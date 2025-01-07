@@ -67,7 +67,7 @@ final class TestListFailFastIteration {
     @Test
     @DisplayName("Test Fail Fast For-Each Using ArrayList")
     void testFailFastForEachUsingArrayList() {
-        final List<Integer> copy = this.copy(this.list);
+        final List<Integer> copy = this.copy();
 
         final Runnable runner = () -> {
             for (final Integer value : copy) {
@@ -110,7 +110,7 @@ final class TestListFailFastIteration {
     @Test
     @DisplayName("Test Fail Fast Iterator Using ArrayList")
     void testFailFastIteratorUsingArrayList() {
-        final List<Integer> copy = this.copy(this.list);
+        final List<Integer> copy = this.copy();
 
         final Runnable runner = () -> {
             for (final Iterator<Integer> iterator = copy.iterator(); iterator.hasNext();) {
@@ -236,10 +236,10 @@ final class TestListFailFastIteration {
         assertThat(this.queue).hasSize(SIZE + 100);
     }
 
-    private List<Integer> copy(final List<Integer> list) {
+    private List<Integer> copy() {
         final List<Integer> copy = new ArrayList<>(SIZE);
 
-        copy.addAll(list);
+        copy.addAll(this.list);
 
         return copy;
     }
