@@ -36,7 +36,7 @@
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot'			version '3.4.1'
+	id 'org.springframework.boot'			version '3.5.0'
 	id 'io.spring.dependency-management'	version '1.1.7'
 }
 
@@ -48,11 +48,11 @@ println "The groupId is ${project.group}"
 println "The artifactId is ${project.name}" // Set in settings.gradle
 println "The version is ${project.version}"
 
-java.sourceCompatibility = JavaVersion.VERSION_23
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+		languageVersion = JavaLanguageVersion.of(24)
 	}
 }
 
@@ -73,7 +73,7 @@ tasks.withType(Javadoc).configureEach {
     StandardJavadocDocletOptions sjdo = options as StandardJavadocDocletOptions
 
     cjo.encoding("UTF-8")
-    cjo.addStringOption("source", "23")
+    cjo.addStringOption("source", "24")
     cjo.memberLevel = JavadocMemberLevel.PRIVATE
 
     sjdo.version(true)

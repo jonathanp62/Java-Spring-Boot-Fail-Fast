@@ -36,4 +36,9 @@ module Spring.Boot.Fail.Fast.main {
     requires spring.boot.autoconfigure;
     requires spring.context;
     requires spring.core;
+
+    opens net.jmp.spring.boot.failfast to spring.core;
+
+    exports net.jmp.spring.boot.failfast;
+    exports net.jmp.spring.boot.failfast.services;
 }
